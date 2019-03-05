@@ -2,6 +2,12 @@ import React, { Component } from "react"
 import styled from "styled-components"
 
 export default class Login extends Component {
+  state = {
+    login: true,
+    email: "",
+    password: "",
+    name: "",
+  }
   render() {
     return (
       <Container>
@@ -12,7 +18,12 @@ export default class Login extends Component {
           <Input />
           <Label>Password</Label>
           <Input />
-          <Button type="submit">Submit</Button>
+          <Button onClick={() => this._confirm()}>
+            {login ? "Login" : "Create Account"}
+          </Button>
+          <div onClick={() => this.setState({ login: !login })}>
+            {login ? "need to create an account?" : "already have an account?"}
+          </div>
         </InputContainer>
       </Container>
     )
@@ -29,7 +40,7 @@ const Container = styled.div`
   padding-top: 25px;
   padding-bottom: 60px;
 `
-const InputContainer = styled.form`
+const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -48,7 +59,7 @@ const Label = styled.p`
   padding-top: 10px;
   margin-top: 10px;
 `
-const Button = styled.button`
+const Button = styled.div`
   margin-top: 40px;
   border: 1px solid #000;
   border-radius: 5px;

@@ -11,6 +11,7 @@ const query = gql`
 export default {
   Mutation: {
     decrementAttempts: (_, params, { cache }) => {
+      // need to refactor based on the taggle mutation
       const attempts = cache.data.data["ROOT_QUERY.routes.0"].attempts
       console.log(attempts)
       const nextAttempts = attempts - 1
