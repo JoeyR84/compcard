@@ -12,8 +12,8 @@ type User {
   name: String!
   email: String! @unique
   password: String!
-  links: [Link!]!
-  votes: [Vote!]!
+  links: [Link!]
+  votes: [Vote!]
 }
 
 type Vote {
