@@ -7,8 +7,6 @@ import Header from "../components/header"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-// This query is executed at run time by Apollo.
-
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />

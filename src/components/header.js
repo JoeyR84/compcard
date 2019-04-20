@@ -3,7 +3,6 @@ import PropTypes from "prop-types"
 import React, { Component } from "react"
 import { redirectTo } from "@reach/router"
 import styled from "styled-components"
-import { slide as Menu } from "react-burger-menu"
 
 import { AUTH_TOKEN } from "../constants"
 
@@ -13,20 +12,6 @@ export default class Header extends Component {
 
     return (
       <Container>
-        <Menu>
-          <a id="home" className="menu-item" href="/">
-            Home
-          </a>
-          <a id="about" className="menu-item" href="/about">
-            About
-          </a>
-          <a id="contact" className="menu-item" href="/contact">
-            Contact
-          </a>
-          <a onClick={this.showSettings} className="menu-item--small" href="">
-            Settings
-          </a>
-        </Menu>
         <Title>{this.props.siteTitle}</Title>
 
         {authToken ? (
@@ -39,9 +24,7 @@ export default class Header extends Component {
           >
             logout
           </div>
-        ) : (
-          <Link to="/login">login</Link>
-        )}
+        ) : null}
         <Initials />
       </Container>
     )
