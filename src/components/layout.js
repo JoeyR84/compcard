@@ -2,7 +2,6 @@ import React from "react"
 import PropTypes from "prop-types"
 import { StaticQuery, graphql } from "gatsby"
 import styled from "styled-components"
-
 import Header from "./header"
 
 const Layout = ({ children }) => (
@@ -18,10 +17,8 @@ const Layout = ({ children }) => (
     `}
     render={data => (
       <Container>
-        <Header siteTitle={data.site.siteMetadata.title} />
-        <div>
-          <main>{children}</main>
-        </div>
+        <Header />
+        <main>{children}</main>
       </Container>
     )}
   />
@@ -33,6 +30,7 @@ Layout.propTypes = {
 
 const Container = styled.div`
   padding: 20px;
+  height: 100%;
 `
 
 export default Layout

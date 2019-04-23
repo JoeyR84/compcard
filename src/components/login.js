@@ -43,7 +43,6 @@ export default class Login extends Component {
     const { login, email, password, name } = this.state
     return (
       <Container>
-        <Logo>Compcard</Logo>
         <InputContainer>
           <Title>LOG IN</Title>
           {!login && (
@@ -54,14 +53,12 @@ export default class Login extends Component {
               placeholder="Your Name"
             />
           )}
-          <Label>Email</Label>
           <Input
             value={email}
             onChange={e => this.setState({ email: e.target.value })}
             type="text"
             placeholder="example@mail.com"
           />
-          <Label>Password</Label>
           <Input
             value={password}
             onChange={e => this.setState({ password: e.target.value })}
@@ -79,11 +76,10 @@ export default class Login extends Component {
               </Button>
             )}
           </Mutation>
-          <div onClick={() => this.setState({ login: !login })}>
+          <Register onClick={() => this.setState({ login: !login })}>
             {login ? "need to create an account?" : "already have an account?"}
-          </div>
+          </Register>
         </InputContainer>
-        {console.log(this.state)}
       </Container>
     )
   }
@@ -94,34 +90,39 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   border: 1px solid #000;
-  height: 640px;
+  height: 100%;
   width: 100%;
   padding-top: 25px;
-  padding-bottom: 60px;
+  padding-bottom: 25px;
 `
 const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
 `
-const Logo = styled.h1``
-const Title = styled.h3``
+const Title = styled.h3`
+  margin-bottom: 40px;
+`
 const Input = styled.input`
   border: 1px solid #000;
   height: 35px;
   width: 200px;
-`
-const Label = styled.p`
-  padding-top: 10px;
-  margin-top: 10px;
+  padding-left: 10px;
+  font-size: 16px;
+  margin-bottom: 40px;
 `
 const Button = styled.div`
-  margin-top: 40px;
+  margin-top: 20px;
   border: 1px solid #000;
   border-radius: 5px;
   height: 35px;
   width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
+const Register = styled.div`
+  padding-top: 20px;
 `

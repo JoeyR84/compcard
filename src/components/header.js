@@ -12,7 +12,7 @@ export default class Header extends Component {
 
     return (
       <Container>
-        <Title>{this.props.siteTitle}</Title>
+        <Title>CompCard</Title>
 
         {authToken ? (
           <div

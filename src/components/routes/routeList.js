@@ -14,6 +14,7 @@ export default class RouteList extends Component {
               label={item.label}
               points={item.points}
               completed={item.completed}
+              title={item.title}
             />
           )
         })}
