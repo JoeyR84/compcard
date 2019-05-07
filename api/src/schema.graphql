@@ -1,0 +1,14 @@
+type Query {
+  info: String!
+  routeList: [Route!]!
+}
+type Route {
+  id: ID!
+  title: String!
+  points: Int!
+  attempts: Int!
+}
+type Mutation {
+  route(attempts: Int!, title: String!, points: Int!): Route!
+  updateRoute(id: ID!, attempts: Int!): Route!
+}
