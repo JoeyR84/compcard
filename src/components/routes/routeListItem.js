@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import styled from "styled-components"
 import { Link } from "@reach/router"
 
-export default class route extends Component {
+export default class RouteListItem extends Component {
   render() {
     return (
       <Link

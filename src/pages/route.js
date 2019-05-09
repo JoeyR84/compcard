@@ -3,6 +3,7 @@ import Layout from "../components/layout"
 import qrCode from "../images/qrCode.png"
 import styled from "styled-components"
 import { navigate } from "@reach/router"
+import { Link } from "@reach/router"
 
 export default class Route extends Component {
   state = {
@@ -12,7 +13,10 @@ export default class Route extends Component {
     return (
       <Layout>
         <Container>
-          {console.log(this.props.location.state.props)}
+          <Link to="/">
+            {" "}
+            <h1>Back</h1>
+          </Link>
           <h1>{this.props.location.state.props.title}</h1>
           <QRCode src={qrCode} />
           <SubContainer>

@@ -1,38 +1,32 @@
 const { GraphQLServer } = require("graphql-yoga")
 
-let routes = [
-  {
-    id: "A-1",
-    title: "Advanced 1",
-    points: 1000,
-    attempts: 0,
-  },
-  {
-    id: "A-2",
-    title: "Advanced 2",
-    points: 1100,
-    attempts: 0,
-  },
-]
-let idCount = routes.length
-// 2
+// the resolvers define the IMPLEMENTATION
 const resolvers = {
   Query: {
     info: () => "This is the API of CompCard",
-    routeList: () => routes,
+    routeList: (root, args, context, info) => {
+      return context.prisma.routes()
+    },
   },
 
   Mutation: {
-    route: (parent, args) => {
-      const route = {
-        id: `route-${idCount++}`,
+    route: (root, args, context) => {
+      return context.prisma.createRoute({
         title: args.title,
         points: args.points,
-        attempts: args.atempts,
-      }
-      routes.push(route)
-      return route
+        attempts: args.attempts,
+      })
     },
+    // implement updateRoute mutation here
+    // updateRoute: (parent, args) => {
+    //   const route = {
+    //     id: args.id,
+    //     title: args.title,
+    //     points: args.points,
+    //     attempts: args.attempts,
+    //   }
+    //   return route
+    // },
   },
 }
 

@@ -5,21 +5,13 @@ var typeDefs = require("./prisma-schema").typeDefs;
 
 var models = [
   {
-    name: "Link",
-    embedded: false
-  },
-  {
-    name: "User",
-    embedded: false
-  },
-  {
-    name: "Vote",
+    name: "Route",
     embedded: false
   }
 ];
 exports.Prisma = prisma_lib_1.makePrismaClientClass({
   typeDefs,
   models,
-  endpoint: `https://us1.prisma.sh/joey-ricketts-6c92d4/server/dev`
+  endpoint: `http://localhost:4466`
 });
 exports.prisma = new exports.Prisma();

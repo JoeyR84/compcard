@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import styled from "styled-components"
 
-import Route from "./route"
+import RouteListItem from "./routeListItem"
 import { routes } from "../../dummyRoutes"
 
 export default class RouteList extends Component {
@@ -10,7 +10,7 @@ export default class RouteList extends Component {
       <Container>
         {routes.map(item => {
           return (
-            <Route
+            <RouteListItem
               label={item.label}
               points={item.points}
               completed={item.completed}
