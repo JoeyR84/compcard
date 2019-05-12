@@ -17,6 +17,7 @@ export type Maybe<T> = T | undefined | null;
 
 export interface Exists {
   route: (where?: RouteWhereInput) => Promise<boolean>;
+  user: (where?: UserWhereInput) => Promise<boolean>;
 }
 
 export interface Node {}
@@ -57,6 +58,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => RouteConnectionPromise;
+  user: (where: UserWhereUniqueInput) => UserNullablePromise;
+  users: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<User>;
+  usersConnection: (args?: {
+    where?: UserWhereInput;
+    orderBy?: UserOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => UserConnectionPromise;
   node: (args: { id: ID_Output }) => Node;
 
   /**
@@ -79,6 +99,22 @@ export interface Prisma {
   }) => RoutePromise;
   deleteRoute: (where: RouteWhereUniqueInput) => RoutePromise;
   deleteManyRoutes: (where?: RouteWhereInput) => BatchPayloadPromise;
+  createUser: (data: UserCreateInput) => UserPromise;
+  updateUser: (args: {
+    data: UserUpdateInput;
+    where: UserWhereUniqueInput;
+  }) => UserPromise;
+  updateManyUsers: (args: {
+    data: UserUpdateManyMutationInput;
+    where?: UserWhereInput;
+  }) => BatchPayloadPromise;
+  upsertUser: (args: {
+    where: UserWhereUniqueInput;
+    create: UserCreateInput;
+    update: UserUpdateInput;
+  }) => UserPromise;
+  deleteUser: (where: UserWhereUniqueInput) => UserPromise;
+  deleteManyUsers: (where?: UserWhereInput) => BatchPayloadPromise;
 
   /**
    * Subscriptions
@@ -91,6 +127,9 @@ export interface Subscription {
   route: (
     where?: RouteSubscriptionWhereInput
   ) => RouteSubscriptionPayloadSubscription;
+  user: (
+    where?: UserSubscriptionWhereInput
+  ) => UserSubscriptionPayloadSubscription;
 }
 
 export interface ClientConstructor<T> {
@@ -112,6 +151,16 @@ export type RouteOrderByInput =
   | "points_DESC"
   | "attempts_ASC"
   | "attempts_DESC";
+
+export type UserOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "name_ASC"
+  | "name_DESC"
+  | "email_ASC"
+  | "email_DESC"
+  | "password_ASC"
+  | "password_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -172,28 +221,276 @@ export interface RouteWhereInput {
   attempts_lte?: Maybe<Int>;
   attempts_gt?: Maybe<Int>;
   attempts_gte?: Maybe<Int>;
+  climbedBy?: Maybe<UserWhereInput>;
   AND?: Maybe<RouteWhereInput[] | RouteWhereInput>;
   OR?: Maybe<RouteWhereInput[] | RouteWhereInput>;
   NOT?: Maybe<RouteWhereInput[] | RouteWhereInput>;
 }
+
+export interface UserWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  name?: Maybe<String>;
+  name_not?: Maybe<String>;
+  name_in?: Maybe<String[] | String>;
+  name_not_in?: Maybe<String[] | String>;
+  name_lt?: Maybe<String>;
+  name_lte?: Maybe<String>;
+  name_gt?: Maybe<String>;
+  name_gte?: Maybe<String>;
+  name_contains?: Maybe<String>;
+  name_not_contains?: Maybe<String>;
+  name_starts_with?: Maybe<String>;
+  name_not_starts_with?: Maybe<String>;
+  name_ends_with?: Maybe<String>;
+  name_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  routes_every?: Maybe<RouteWhereInput>;
+  routes_some?: Maybe<RouteWhereInput>;
+  routes_none?: Maybe<RouteWhereInput>;
+  AND?: Maybe<UserWhereInput[] | UserWhereInput>;
+  OR?: Maybe<UserWhereInput[] | UserWhereInput>;
+  NOT?: Maybe<UserWhereInput[] | UserWhereInput>;
+}
+
+export type UserWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  email?: Maybe<String>;
+}>;
 
 export interface RouteCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   points: Int;
   attempts: Int;
+  climbedBy?: Maybe<UserCreateOneWithoutRoutesInput>;
+}
+
+export interface UserCreateOneWithoutRoutesInput {
+  create?: Maybe<UserCreateWithoutRoutesInput>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutRoutesInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  email: String;
+  password: String;
 }
 
 export interface RouteUpdateInput {
   title?: Maybe<String>;
   points?: Maybe<Int>;
   attempts?: Maybe<Int>;
+  climbedBy?: Maybe<UserUpdateOneWithoutRoutesInput>;
+}
+
+export interface UserUpdateOneWithoutRoutesInput {
+  create?: Maybe<UserCreateWithoutRoutesInput>;
+  update?: Maybe<UserUpdateWithoutRoutesDataInput>;
+  upsert?: Maybe<UserUpsertWithoutRoutesInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<UserWhereUniqueInput>;
+}
+
+export interface UserUpdateWithoutRoutesDataInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface UserUpsertWithoutRoutesInput {
+  update: UserUpdateWithoutRoutesDataInput;
+  create: UserCreateWithoutRoutesInput;
 }
 
 export interface RouteUpdateManyMutationInput {
   title?: Maybe<String>;
   points?: Maybe<Int>;
   attempts?: Maybe<Int>;
+}
+
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  name: String;
+  email: String;
+  password: String;
+  routes?: Maybe<RouteCreateManyWithoutClimbedByInput>;
+}
+
+export interface RouteCreateManyWithoutClimbedByInput {
+  create?: Maybe<
+    RouteCreateWithoutClimbedByInput[] | RouteCreateWithoutClimbedByInput
+  >;
+  connect?: Maybe<RouteWhereUniqueInput[] | RouteWhereUniqueInput>;
+}
+
+export interface RouteCreateWithoutClimbedByInput {
+  id?: Maybe<ID_Input>;
+  title: String;
+  points: Int;
+  attempts: Int;
+}
+
+export interface UserUpdateInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
+  routes?: Maybe<RouteUpdateManyWithoutClimbedByInput>;
+}
+
+export interface RouteUpdateManyWithoutClimbedByInput {
+  create?: Maybe<
+    RouteCreateWithoutClimbedByInput[] | RouteCreateWithoutClimbedByInput
+  >;
+  delete?: Maybe<RouteWhereUniqueInput[] | RouteWhereUniqueInput>;
+  connect?: Maybe<RouteWhereUniqueInput[] | RouteWhereUniqueInput>;
+  set?: Maybe<RouteWhereUniqueInput[] | RouteWhereUniqueInput>;
+  disconnect?: Maybe<RouteWhereUniqueInput[] | RouteWhereUniqueInput>;
+  update?: Maybe<
+    | RouteUpdateWithWhereUniqueWithoutClimbedByInput[]
+    | RouteUpdateWithWhereUniqueWithoutClimbedByInput
+  >;
+  upsert?: Maybe<
+    | RouteUpsertWithWhereUniqueWithoutClimbedByInput[]
+    | RouteUpsertWithWhereUniqueWithoutClimbedByInput
+  >;
+  deleteMany?: Maybe<RouteScalarWhereInput[] | RouteScalarWhereInput>;
+  updateMany?: Maybe<
+    RouteUpdateManyWithWhereNestedInput[] | RouteUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface RouteUpdateWithWhereUniqueWithoutClimbedByInput {
+  where: RouteWhereUniqueInput;
+  data: RouteUpdateWithoutClimbedByDataInput;
+}
+
+export interface RouteUpdateWithoutClimbedByDataInput {
+  title?: Maybe<String>;
+  points?: Maybe<Int>;
+  attempts?: Maybe<Int>;
+}
+
+export interface RouteUpsertWithWhereUniqueWithoutClimbedByInput {
+  where: RouteWhereUniqueInput;
+  update: RouteUpdateWithoutClimbedByDataInput;
+  create: RouteCreateWithoutClimbedByInput;
+}
+
+export interface RouteScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  title?: Maybe<String>;
+  title_not?: Maybe<String>;
+  title_in?: Maybe<String[] | String>;
+  title_not_in?: Maybe<String[] | String>;
+  title_lt?: Maybe<String>;
+  title_lte?: Maybe<String>;
+  title_gt?: Maybe<String>;
+  title_gte?: Maybe<String>;
+  title_contains?: Maybe<String>;
+  title_not_contains?: Maybe<String>;
+  title_starts_with?: Maybe<String>;
+  title_not_starts_with?: Maybe<String>;
+  title_ends_with?: Maybe<String>;
+  title_not_ends_with?: Maybe<String>;
+  points?: Maybe<Int>;
+  points_not?: Maybe<Int>;
+  points_in?: Maybe<Int[] | Int>;
+  points_not_in?: Maybe<Int[] | Int>;
+  points_lt?: Maybe<Int>;
+  points_lte?: Maybe<Int>;
+  points_gt?: Maybe<Int>;
+  points_gte?: Maybe<Int>;
+  attempts?: Maybe<Int>;
+  attempts_not?: Maybe<Int>;
+  attempts_in?: Maybe<Int[] | Int>;
+  attempts_not_in?: Maybe<Int[] | Int>;
+  attempts_lt?: Maybe<Int>;
+  attempts_lte?: Maybe<Int>;
+  attempts_gt?: Maybe<Int>;
+  attempts_gte?: Maybe<Int>;
+  AND?: Maybe<RouteScalarWhereInput[] | RouteScalarWhereInput>;
+  OR?: Maybe<RouteScalarWhereInput[] | RouteScalarWhereInput>;
+  NOT?: Maybe<RouteScalarWhereInput[] | RouteScalarWhereInput>;
+}
+
+export interface RouteUpdateManyWithWhereNestedInput {
+  where: RouteScalarWhereInput;
+  data: RouteUpdateManyDataInput;
+}
+
+export interface RouteUpdateManyDataInput {
+  title?: Maybe<String>;
+  points?: Maybe<Int>;
+  attempts?: Maybe<Int>;
+}
+
+export interface UserUpdateManyMutationInput {
+  name?: Maybe<String>;
+  email?: Maybe<String>;
+  password?: Maybe<String>;
 }
 
 export interface RouteSubscriptionWhereInput {
@@ -205,6 +502,17 @@ export interface RouteSubscriptionWhereInput {
   AND?: Maybe<RouteSubscriptionWhereInput[] | RouteSubscriptionWhereInput>;
   OR?: Maybe<RouteSubscriptionWhereInput[] | RouteSubscriptionWhereInput>;
   NOT?: Maybe<RouteSubscriptionWhereInput[] | RouteSubscriptionWhereInput>;
+}
+
+export interface UserSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<UserWhereInput>;
+  AND?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  OR?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
+  NOT?: Maybe<UserSubscriptionWhereInput[] | UserSubscriptionWhereInput>;
 }
 
 export interface NodeNode {
@@ -225,6 +533,7 @@ export interface RoutePromise extends Promise<Route>, Fragmentable {
   title: () => Promise<String>;
   points: () => Promise<Int>;
   attempts: () => Promise<Int>;
+  climbedBy: <T = UserPromise>() => T;
 }
 
 export interface RouteSubscription
@@ -235,6 +544,7 @@ export interface RouteSubscription
   title: () => Promise<AsyncIterator<String>>;
   points: () => Promise<AsyncIterator<Int>>;
   attempts: () => Promise<AsyncIterator<Int>>;
+  climbedBy: <T = UserSubscription>() => T;
 }
 
 export interface RouteNullablePromise
@@ -245,6 +555,66 @@ export interface RouteNullablePromise
   title: () => Promise<String>;
   points: () => Promise<Int>;
   attempts: () => Promise<Int>;
+  climbedBy: <T = UserPromise>() => T;
+}
+
+export interface User {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password: String;
+}
+
+export interface UserPromise extends Promise<User>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  routes: <T = FragmentableArray<Route>>(args?: {
+    where?: RouteWhereInput;
+    orderBy?: RouteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserSubscription
+  extends Promise<AsyncIterator<User>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+  routes: <T = Promise<AsyncIterator<RouteSubscription>>>(args?: {
+    where?: RouteWhereInput;
+    orderBy?: RouteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface UserNullablePromise
+  extends Promise<User | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+  routes: <T = FragmentableArray<Route>>(args?: {
+    where?: RouteWhereInput;
+    orderBy?: RouteOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface RouteConnection {
@@ -324,6 +694,60 @@ export interface AggregateRouteSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface UserConnection {
+  pageInfo: PageInfo;
+  edges: UserEdge[];
+}
+
+export interface UserConnectionPromise
+  extends Promise<UserConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<UserEdge>>() => T;
+  aggregate: <T = AggregateUserPromise>() => T;
+}
+
+export interface UserConnectionSubscription
+  extends Promise<AsyncIterator<UserConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<UserEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateUserSubscription>() => T;
+}
+
+export interface UserEdge {
+  node: User;
+  cursor: String;
+}
+
+export interface UserEdgePromise extends Promise<UserEdge>, Fragmentable {
+  node: <T = UserPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface UserEdgeSubscription
+  extends Promise<AsyncIterator<UserEdge>>,
+    Fragmentable {
+  node: <T = UserSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateUser {
+  count: Int;
+}
+
+export interface AggregateUserPromise
+  extends Promise<AggregateUser>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateUserSubscription
+  extends Promise<AsyncIterator<AggregateUser>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface BatchPayload {
   count: Long;
 }
@@ -393,6 +817,56 @@ export interface RoutePreviousValuesSubscription
   attempts: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface UserSubscriptionPayload {
+  mutation: MutationType;
+  node: User;
+  updatedFields: String[];
+  previousValues: UserPreviousValues;
+}
+
+export interface UserSubscriptionPayloadPromise
+  extends Promise<UserSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = UserPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = UserPreviousValuesPromise>() => T;
+}
+
+export interface UserSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<UserSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = UserSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = UserPreviousValuesSubscription>() => T;
+}
+
+export interface UserPreviousValues {
+  id: ID_Output;
+  name: String;
+  email: String;
+  password: String;
+}
+
+export interface UserPreviousValuesPromise
+  extends Promise<UserPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  name: () => Promise<String>;
+  email: () => Promise<String>;
+  password: () => Promise<String>;
+}
+
+export interface UserPreviousValuesSubscription
+  extends Promise<AsyncIterator<UserPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  name: () => Promise<AsyncIterator<String>>;
+  email: () => Promise<AsyncIterator<String>>;
+  password: () => Promise<AsyncIterator<String>>;
+}
+
 /*
 The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID.
 */
@@ -433,6 +907,10 @@ export type Long = string;
 export const models: Model[] = [
   {
     name: "Route",
+    embedded: false
+  },
+  {
+    name: "User",
     embedded: false
   }
 ];

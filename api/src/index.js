@@ -1,4 +1,5 @@
 const { GraphQLServer } = require("graphql-yoga")
+const { prisma } = require("./generated/prisma-client")
 
 // the resolvers define the IMPLEMENTATION
 const resolvers = {
@@ -34,6 +35,7 @@ const resolvers = {
 const server = new GraphQLServer({
   typeDefs: "./src/schema.graphql",
   resolvers,
+  context: { prisma },
 })
 server.start(() =>
   console.log("server is up and running on port 4000, woohoo!")

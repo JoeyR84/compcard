@@ -5,4 +5,13 @@ type Route {
   title: String!
   points: Int!
   attempts: Int!
+  climbedBy: User
+}
+
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  password: String!
+  routes: [Route!]!
 }

@@ -7,6 +7,10 @@ module.exports = {
   count: Int!
 }
 
+type AggregateUser {
+  count: Int!
+}
+
 type BatchPayload {
   count: Long!
 }
@@ -22,6 +26,12 @@ type Mutation {
   upsertRoute(where: RouteWhereUniqueInput!, create: RouteCreateInput!, update: RouteUpdateInput!): Route!
   deleteRoute(where: RouteWhereUniqueInput!): Route
   deleteManyRoutes(where: RouteWhereInput): BatchPayload!
+  createUser(data: UserCreateInput!): User!
+  updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  deleteUser(where: UserWhereUniqueInput!): User
+  deleteManyUsers(where: UserWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -45,6 +55,9 @@ type Query {
   route(where: RouteWhereUniqueInput!): Route
   routes(where: RouteWhereInput, orderBy: RouteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Route]!
   routesConnection(where: RouteWhereInput, orderBy: RouteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): RouteConnection!
+  user(where: UserWhereUniqueInput!): User
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
   node(id: ID!): Node
 }
 
@@ -54,6 +67,7 @@ type Route {
   title: String!
   points: Int!
   attempts: Int!
+  climbedBy: User
 }
 
 type RouteConnection {
@@ -63,6 +77,19 @@ type RouteConnection {
 }
 
 input RouteCreateInput {
+  id: ID
+  title: String!
+  points: Int!
+  attempts: Int!
+  climbedBy: UserCreateOneWithoutRoutesInput
+}
+
+input RouteCreateManyWithoutClimbedByInput {
+  create: [RouteCreateWithoutClimbedByInput!]
+  connect: [RouteWhereUniqueInput!]
+}
+
+input RouteCreateWithoutClimbedByInput {
   id: ID
   title: String!
   points: Int!
@@ -95,6 +122,64 @@ type RoutePreviousValues {
   attempts: Int!
 }
 
+input RouteScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  title: String
+  title_not: String
+  title_in: [String!]
+  title_not_in: [String!]
+  title_lt: String
+  title_lte: String
+  title_gt: String
+  title_gte: String
+  title_contains: String
+  title_not_contains: String
+  title_starts_with: String
+  title_not_starts_with: String
+  title_ends_with: String
+  title_not_ends_with: String
+  points: Int
+  points_not: Int
+  points_in: [Int!]
+  points_not_in: [Int!]
+  points_lt: Int
+  points_lte: Int
+  points_gt: Int
+  points_gte: Int
+  attempts: Int
+  attempts_not: Int
+  attempts_in: [Int!]
+  attempts_not_in: [Int!]
+  attempts_lt: Int
+  attempts_lte: Int
+  attempts_gt: Int
+  attempts_gte: Int
+  AND: [RouteScalarWhereInput!]
+  OR: [RouteScalarWhereInput!]
+  NOT: [RouteScalarWhereInput!]
+}
+
 type RouteSubscriptionPayload {
   mutation: MutationType!
   node: Route
@@ -117,12 +202,53 @@ input RouteUpdateInput {
   title: String
   points: Int
   attempts: Int
+  climbedBy: UserUpdateOneWithoutRoutesInput
+}
+
+input RouteUpdateManyDataInput {
+  title: String
+  points: Int
+  attempts: Int
 }
 
 input RouteUpdateManyMutationInput {
   title: String
   points: Int
   attempts: Int
+}
+
+input RouteUpdateManyWithoutClimbedByInput {
+  create: [RouteCreateWithoutClimbedByInput!]
+  delete: [RouteWhereUniqueInput!]
+  connect: [RouteWhereUniqueInput!]
+  set: [RouteWhereUniqueInput!]
+  disconnect: [RouteWhereUniqueInput!]
+  update: [RouteUpdateWithWhereUniqueWithoutClimbedByInput!]
+  upsert: [RouteUpsertWithWhereUniqueWithoutClimbedByInput!]
+  deleteMany: [RouteScalarWhereInput!]
+  updateMany: [RouteUpdateManyWithWhereNestedInput!]
+}
+
+input RouteUpdateManyWithWhereNestedInput {
+  where: RouteScalarWhereInput!
+  data: RouteUpdateManyDataInput!
+}
+
+input RouteUpdateWithoutClimbedByDataInput {
+  title: String
+  points: Int
+  attempts: Int
+}
+
+input RouteUpdateWithWhereUniqueWithoutClimbedByInput {
+  where: RouteWhereUniqueInput!
+  data: RouteUpdateWithoutClimbedByDataInput!
+}
+
+input RouteUpsertWithWhereUniqueWithoutClimbedByInput {
+  where: RouteWhereUniqueInput!
+  update: RouteUpdateWithoutClimbedByDataInput!
+  create: RouteCreateWithoutClimbedByInput!
 }
 
 input RouteWhereInput {
@@ -178,6 +304,7 @@ input RouteWhereInput {
   attempts_lte: Int
   attempts_gt: Int
   attempts_gte: Int
+  climbedBy: UserWhereInput
   AND: [RouteWhereInput!]
   OR: [RouteWhereInput!]
   NOT: [RouteWhereInput!]
@@ -189,6 +316,185 @@ input RouteWhereUniqueInput {
 
 type Subscription {
   route(where: RouteSubscriptionWhereInput): RouteSubscriptionPayload
+  user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+  routes(where: RouteWhereInput, orderBy: RouteOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Route!]
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
+  edges: [UserEdge]!
+  aggregate: AggregateUser!
+}
+
+input UserCreateInput {
+  id: ID
+  name: String!
+  email: String!
+  password: String!
+  routes: RouteCreateManyWithoutClimbedByInput
+}
+
+input UserCreateOneWithoutRoutesInput {
+  create: UserCreateWithoutRoutesInput
+  connect: UserWhereUniqueInput
+}
+
+input UserCreateWithoutRoutesInput {
+  id: ID
+  name: String!
+  email: String!
+  password: String!
+}
+
+type UserEdge {
+  node: User!
+  cursor: String!
+}
+
+enum UserOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+}
+
+type UserPreviousValues {
+  id: ID!
+  name: String!
+  email: String!
+  password: String!
+}
+
+type UserSubscriptionPayload {
+  mutation: MutationType!
+  node: User
+  updatedFields: [String!]
+  previousValues: UserPreviousValues
+}
+
+input UserSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: UserWhereInput
+  AND: [UserSubscriptionWhereInput!]
+  OR: [UserSubscriptionWhereInput!]
+  NOT: [UserSubscriptionWhereInput!]
+}
+
+input UserUpdateInput {
+  name: String
+  email: String
+  password: String
+  routes: RouteUpdateManyWithoutClimbedByInput
+}
+
+input UserUpdateManyMutationInput {
+  name: String
+  email: String
+  password: String
+}
+
+input UserUpdateOneWithoutRoutesInput {
+  create: UserCreateWithoutRoutesInput
+  update: UserUpdateWithoutRoutesDataInput
+  upsert: UserUpsertWithoutRoutesInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: UserWhereUniqueInput
+}
+
+input UserUpdateWithoutRoutesDataInput {
+  name: String
+  email: String
+  password: String
+}
+
+input UserUpsertWithoutRoutesInput {
+  update: UserUpdateWithoutRoutesDataInput!
+  create: UserCreateWithoutRoutesInput!
+}
+
+input UserWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  name: String
+  name_not: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_lt: String
+  name_lte: String
+  name_gt: String
+  name_gte: String
+  name_contains: String
+  name_not_contains: String
+  name_starts_with: String
+  name_not_starts_with: String
+  name_ends_with: String
+  name_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  routes_every: RouteWhereInput
+  routes_some: RouteWhereInput
+  routes_none: RouteWhereInput
+  AND: [UserWhereInput!]
+  OR: [UserWhereInput!]
+  NOT: [UserWhereInput!]
+}
+
+input UserWhereUniqueInput {
+  id: ID
+  email: String
 }
 `
       }
